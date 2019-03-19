@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "DrawDebugHelpers.h"
+#include "AbilitySystemComponent.h"
 
 
 
@@ -14,6 +15,8 @@ ABaseCharacter::ABaseCharacter()
 
 	RollStrength = 600;
 	DashStrength = 3500;
+
+	Abilities = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
 }
 
 void ABaseCharacter::BeginPlay()

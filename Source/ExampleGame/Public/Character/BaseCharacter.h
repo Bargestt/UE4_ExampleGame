@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
+class UAbilitySystemComponent;
 
 UCLASS()
 class EXAMPLEGAME_API ABaseCharacter : public ACharacter
@@ -13,6 +14,9 @@ class EXAMPLEGAME_API ABaseCharacter : public ACharacter
 	GENERATED_BODY()
 
 	UAnimInstance* Animator;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities, meta = (AllowPrivateAccess = "true"))
+	UAbilitySystemComponent* Abilities;
 
 public:
 
@@ -35,4 +39,8 @@ protected:
 	void ActionRoll();
 
 	void ActionDash();
+
+public:
+
+	FORCEINLINE UAbilitySystemComponent* GetAbilitySystem() { return Abilities; }
 };
