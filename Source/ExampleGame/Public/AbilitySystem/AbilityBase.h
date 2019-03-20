@@ -76,6 +76,8 @@ protected:
 
 	FORCEINLINE bool IsTickEnabled() const { return bTickEnabled; }
 
+	FORCEINLINE AActor* GetOwner() { return Owner; }
+
 	virtual class UWorld* GetWorld() const override;
 
 };

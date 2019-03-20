@@ -19,7 +19,7 @@ public:
 	TSet<TSubclassOf<UAbilityBase>> DefaultAbilities;
 
 private:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, Instanced, Category = "AbilitySystem")
 	TArray<UAbilityBase*> AbilitySlots;
 
 public:	
@@ -34,6 +34,7 @@ protected:
 
 	void Initialize();
 
+public:
 	UFUNCTION(BlueprintCallable, Category = "Abilities|AbilitySystem")
 	bool ActivateAbilitySlot(int SlotIndex);
 

@@ -10,7 +10,6 @@ UAbilitySystemComponent::UAbilitySystemComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
 	// ...
 }
 
@@ -40,7 +39,8 @@ void UAbilitySystemComponent::Initialize()
 {
 	for (TSubclassOf<UAbilityBase> abilityClass : DefaultAbilities)
 	{
-		UAbilityBase* ability = NewObject<UAbilityBase>(this, NAME_None, RF_Transient | RF_Transactional | RF_TextExportTransient);
+
+		UAbilityBase* ability = NewObject<UAbilityBase>(this, abilityClass, NAME_None, RF_Transient | RF_Transactional | RF_TextExportTransient);
 		if (ability->Setup(GetOwner()))
 		{
 			AbilitySlots.Add(ability);
@@ -53,7 +53,6 @@ bool UAbilitySystemComponent::ActivateAbilitySlot(int SlotIndex)
 	if (AbilitySlots.IsValidIndex(SlotIndex))
 	{
 		UAbilityBase* Ability = AbilitySlots[SlotIndex];
-
 		return Ability->Call();		
 	}
 

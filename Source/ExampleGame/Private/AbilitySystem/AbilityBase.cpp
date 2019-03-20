@@ -19,7 +19,7 @@ bool UAbilityBase::Setup(AActor* SetupOwner)
 
 	if (!IsValid(SetupOwner)) return false;
 	Owner = SetupOwner;
-
+	
 	bInitialized = Initialize(Owner);
 
 	return bInitialized;
@@ -38,8 +38,12 @@ void UAbilityBase::Tick(float DeltaTime)
 bool UAbilityBase::Call()
 {
 	if (!CanCall()) return false;
-	
+
 	OnCall();
+
+#if WITH_EDITOR
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, GetClass()->GetName() + TEXT(" Called"));
+#endif
 
 	if (GetCouldTick()) 
 	{
@@ -55,6 +59,8 @@ void UAbilityBase::EndCall()
 
 	OnEndCall();
 }
+
+
 
 class UWorld* UAbilityBase::GetWorld() const
 {
