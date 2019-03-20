@@ -12,6 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "AbilitySystemComponent.h"
 
 
 // Sets default values
@@ -77,6 +78,17 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &APlayerCharacter::Dash);
 	PlayerInputComponent->BindAction("Roll", IE_Pressed, this, &APlayerCharacter::Roll);
+
+	//AbilitySlot_X
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_1", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 1);
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_2", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 2);
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_3", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 3);
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_4", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 4);
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_5", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 5);
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_6", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 6);
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_7", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 7);
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_8", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 8);
+	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_9", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 9);
 }
 
 
@@ -119,4 +131,11 @@ void APlayerCharacter::Dash()
 void APlayerCharacter::Roll()
 {
 	ActionRoll();
+}
+
+
+
+void APlayerCharacter::CallAbilitySlot(int32 SlotIndex)
+{
+	GetAbilitySystem()->ActivateAbilitySlot(SlotIndex-1);
 }

@@ -17,6 +17,7 @@ class EXAMPLEGAME_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 	
+	DECLARE_DELEGATE_OneParam(FAbilitySlotDelegate, int32);
 
 protected:
 	/** Camera arm positioning the camera behind the character */
@@ -59,6 +60,8 @@ protected:
 
 	/** Called for Roll evasion */
 	void Roll();
+
+	void CallAbilitySlot(int32 SlotIndex);
 
 	//~ End Basic Input
 
