@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Tickable.h"
 #include "AbilityBase.generated.h"
 
 /**
  * 
  */
 UCLASS(Abstract, ClassGroup = (Ability))
-class EXAMPLEGAME_API UAbilityBase : public UObject
+class EXAMPLEGAME_API UAbilityBase : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 
@@ -39,18 +40,27 @@ public:
 	 */
 	bool Call();
 
-	/** Tick while call in progress */
-	void Tick(float DeltaTime);
-
 	/** End Call and tick */
 	void EndCall();
+
+
+	//~Begin FTickableGameObject
+public:
+
+	virtual void Tick(float DeltaTime) override { }
+
+	virtual ETickableTickType GetTickableTickType() const override { return ETickableTickType::Conditional; }
+
+	virtual bool IsTickable() const override { return bTickEnabled; }
+
+	virtual TStatId GetStatId() const override { return UObject::GetStatID(); }
+
+	//~ End FTickableGameObject
+
 
 protected:
 	/** Actions on call */
 	virtual void OnCall() {}
-
-	/** Actions on tick */
-	virtual void OnTick(float DeltaTime) {}
 
 	/** Actions on call end */
 	virtual void OnEndCall() {}

@@ -16,11 +16,6 @@ UAbilitySystemComponent::UAbilitySystemComponent()
 void UAbilitySystemComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	for (UAbilityBase* ability : AbilitySlots)
-	{
-		ability->Tick(DeltaTime);
-	}
 }
 
 

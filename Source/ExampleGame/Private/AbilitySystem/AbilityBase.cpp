@@ -27,14 +27,6 @@ bool UAbilityBase::Setup(AActor* SetupOwner)
 
 
 
-void UAbilityBase::Tick(float DeltaTime)
-{
-	if (bTickEnabled)
-	{
-		OnTick(DeltaTime);
-	}
-}
-
 bool UAbilityBase::Call()
 {
 	if (!CanCall()) return false;
@@ -61,19 +53,15 @@ void UAbilityBase::EndCall()
 }
 
 
-
 class UWorld* UAbilityBase::GetWorld() const
 {
-	if (Cast<UActorComponent>(GetOuter()))
+	if (Cast<UActorComponent>(GetOuter()) || Cast<AActor>(GetOuter()))
 	{
 		return GetOuter()->GetWorld();
 	}
-	else
-	{
-		return nullptr;
-	}
-}
 
+	return nullptr;
+}
 
 
 
