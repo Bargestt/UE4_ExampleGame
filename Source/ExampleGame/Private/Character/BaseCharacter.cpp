@@ -6,6 +6,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "DrawDebugHelpers.h"
 #include "AbilitySystemComponent.h"
+#include "Animation/AnimInstance.h"
 
 
 

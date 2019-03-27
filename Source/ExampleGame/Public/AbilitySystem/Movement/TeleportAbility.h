@@ -17,8 +17,10 @@ class EXAMPLEGAME_API UTeleportAbility : public UMovementAbility
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(EditAnywhere)
 	float MaxVerticalDelta;
 
+	UPROPERTY(EditAnywhere)
 	float MaxDistance;
 
 	UPROPERTY()

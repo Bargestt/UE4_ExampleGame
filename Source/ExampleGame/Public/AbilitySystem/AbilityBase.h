@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Tickable.h"
+#include "AnimatedAbilityInterface.h"
 #include "AbilityBase.generated.h"
 
 /**
  * 
  */
-UCLASS(Abstract, ClassGroup = (Ability))
-class EXAMPLEGAME_API UAbilityBase : public UObject, public FTickableGameObject
+UCLASS(ClassGroup = (Ability))
+class EXAMPLEGAME_API UAbilityBase : public UObject, public FTickableGameObject, public IAnimatedAbilityInterface
 {
 	GENERATED_BODY()
 
@@ -57,6 +58,9 @@ public:
 
 	//~ End FTickableGameObject
 
+	//~ Begin IAnimatedAbilityInterface
+	virtual UAnimMontage* GetAnimation() override{ return nullptr; }
+	//~ End IAnimatedAbilityInterface
 
 protected:
 	/** Actions on call */
@@ -85,6 +89,8 @@ protected:
 	FORCEINLINE void SetCouldTick(bool val) { bCouldTick = val; }
 
 	FORCEINLINE bool IsTickEnabled() const { return bTickEnabled; }
+
+	FORCEINLINE bool IsAnimated() { return GetAnimation() != nullptr; }
 
 	FORCEINLINE AActor* GetOwner() { return Owner; }
 

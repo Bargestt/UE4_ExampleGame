@@ -19,7 +19,7 @@ bool UAbilityBase::Setup(AActor* SetupOwner)
 
 	if (!IsValid(SetupOwner)) return false;
 	Owner = SetupOwner;
-	
+
 	bInitialized = Initialize(Owner);
 
 	return bInitialized;
@@ -51,6 +51,9 @@ void UAbilityBase::EndCall()
 
 	OnEndCall();
 }
+
+
+
 
 
 class UWorld* UAbilityBase::GetWorld() const
