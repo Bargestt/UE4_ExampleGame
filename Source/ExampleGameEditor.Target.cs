@@ -9,5 +9,12 @@ public class ExampleGameEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		ExtraModuleNames.Add("ExampleGame");
-	}
+
+        // Game editor
+        ExtraModuleNames.AddRange(
+            new string[]
+            {
+                "ExampleGameEditor"
+            });
+    }
 }

@@ -12,6 +12,14 @@
 				"Engine",
 				"CoreUObject"
 			]
+		},
+		{
+			"Name": "ExampleGameEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"UnrealEd"
+			]
 		}
 	]
 }

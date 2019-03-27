@@ -9,5 +9,5 @@ public class ExampleGameTarget : TargetRules
 	{
 		Type = TargetType.Game;
 		ExtraModuleNames.Add("ExampleGame");
-	}
+    }
 }
