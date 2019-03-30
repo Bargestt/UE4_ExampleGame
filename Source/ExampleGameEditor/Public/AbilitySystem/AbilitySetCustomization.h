@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "IDetailCustomization.h"
 
+class FReply;
+
 /**
  * 
  */
@@ -16,5 +18,7 @@ public:
 
 
 	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
+
+	FReply ButtonClickEvent();
 
 };

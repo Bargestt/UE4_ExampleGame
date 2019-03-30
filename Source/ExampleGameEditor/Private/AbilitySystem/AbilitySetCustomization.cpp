@@ -80,7 +80,7 @@ void FAbilitySetCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBuil
 				[
 					SNew(SButton)
 					.Text(LOCTEXT("ButtonAdd", "AddNew"))
-					.OnClicked_Lambda(AddNew)
+					.OnClicked(this, &FAbilitySetCustomization::ButtonClickEvent)
 				]
 				+ SHorizontalBox::Slot()
 				[
@@ -90,5 +90,11 @@ void FAbilitySetCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBuil
 			];
 }
 
+
+FReply FAbilitySetCustomization::ButtonClickEvent()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Button Click"));
+	return FReply::Handled();
+}
 
 #undef LOCTEXT_NAMESPACE
