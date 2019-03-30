@@ -25,7 +25,7 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	class UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
-	if (animInstance->Implements<UBaseCharaterAnimatorInterface>())
+	if (animInstance && animInstance->Implements<UBaseCharaterAnimatorInterface>())
 	{
 		Animator = animInstance;
 	}
