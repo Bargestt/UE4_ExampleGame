@@ -52,13 +52,14 @@ void UHealthComponent::ApplyDamageFinal(float Damage, TSubclassOf<UDamageType> D
 		CurrentHealth -= Damage;
 		if (!IsAlive())
 		{
-			OnDeath(Damage, -CurrentHealth, DamageType, InstigatedBy, DamageCauser);
+			OnDeathEvent(Damage, -CurrentHealth, DamageType, InstigatedBy, DamageCauser);
+			OnDeath.Broadcast(this, Damage, -CurrentHealth, DamageType, InstigatedBy, DamageCauser);
 		}
 	}
 }
 
 
-void UHealthComponent::OnDeath(float LastDamage, float OverDamage, TSubclassOf<UDamageType> DamageType, AController* KilledBy, AActor* DamageCauser)
+void UHealthComponent::OnDeathEvent(float LastDamage, float OverDamage, TSubclassOf<UDamageType> DamageType, AController* KilledBy, AActor* DamageCauser)
 {
 
 }
