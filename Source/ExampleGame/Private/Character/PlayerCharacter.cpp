@@ -79,6 +79,9 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &APlayerCharacter::Dash);
 	PlayerInputComponent->BindAction("Roll", IE_Pressed, this, &APlayerCharacter::Roll);
 
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &APlayerCharacter::StartShooting);
+	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &APlayerCharacter::EndShooting);
+
 	//AbilitySlot_X
 	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_1", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 1);
 	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_2", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 2);
@@ -89,6 +92,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_7", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 7);
 	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_8", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 8);
 	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_9", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 9);
+
 }
 
 
@@ -138,4 +142,14 @@ void APlayerCharacter::Roll()
 void APlayerCharacter::CallAbilitySlot(int32 SlotIndex)
 {
 	GetAbilitySystem()->ActivateAbilitySlot(SlotIndex-1);
+}
+
+void APlayerCharacter::StartShooting()
+{
+
+}
+
+void APlayerCharacter::EndShooting()
+{
+
 }

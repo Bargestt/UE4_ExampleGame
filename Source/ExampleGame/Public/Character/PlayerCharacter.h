@@ -63,6 +63,10 @@ protected:
 
 	void CallAbilitySlot(int32 SlotIndex);
 
+	void StartShooting();
+
+	void EndShooting();
+
 	//~ End Basic Input
 
 
