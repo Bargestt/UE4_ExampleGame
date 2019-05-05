@@ -8,6 +8,9 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UPlayerAimComponent;
+class AWeapon;
+class AGamePlayerController;
 
 /**
  * 
@@ -17,7 +20,9 @@ class EXAMPLEGAME_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 	
-	DECLARE_DELEGATE_OneParam(FAbilitySlotDelegate, int32);
+	
+
+	AGamePlayerController* PlayerController;
 
 protected:
 	/** Camera arm positioning the camera behind the character */
@@ -28,8 +33,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	AWeapon* Weapon;
 
 public:
+	UPROPERTY(EditAnywhere, Category = "Debug")
+	TSubclassOf<AWeapon> DefaultWeapon;
+
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseTurnRate;
@@ -38,11 +49,21 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
 
+
+	   
+
+
+	
+
+
+
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
+	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaSeconds) override;
 protected:
 	//~ Begin Basic Input 
 
@@ -61,20 +82,50 @@ protected:
 	/** Called for Roll evasion */
 	void Roll();
 
+	DECLARE_DELEGATE_OneParam(FAbilitySlotDelegate, int32);
 	void CallAbilitySlot(int32 SlotIndex);
 
 	void StartShooting();
 
 	void EndShooting();
 
+
+	void MoveCamera();
 	//~ End Basic Input
 
 
 
+	virtual void PossessedBy(AController* NewController) override;
+
+	virtual void UnPossessed() override;
+
+	
+
+//~ Begin BaseCharacter
+	virtual FRotator GetAimOffsets() const override;
+//~ End BaseCharacter
+
+
+
+	//~ Begin WeaponInteraction
+
+	UFUNCTION(BlueprintCallable, Category = "Player|Weapon")
+	void SetWeapon(AWeapon* NewWeapon);
+
+	virtual void OnWeaponChange() {};
+
+	//~ End WeaponInteraction
+
+
+public:
 	//~ Getters / Setters
 
 	/** Returns CameraArm subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraArm() const { return CameraArm; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	/** Returns current Weapon */
+	FORCEINLINE class AWeapon* GetWeapon() const { return Weapon; }
+
+
 };

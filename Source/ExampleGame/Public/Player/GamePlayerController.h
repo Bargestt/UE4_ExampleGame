@@ -15,8 +15,13 @@ class EXAMPLEGAME_API AGamePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, Category = "Aim", meta = (AllowPrivateAccess = "true"))
-	UPlayerAimComponent* AimComponent;
+
+	FVector AimLocation;
+
+	FRotator AimRotation;
+
+	float AimRange;
+
 public:
 
 	AGamePlayerController();	
@@ -26,5 +31,31 @@ public:
 	virtual void Possess(APawn* aPawn) override;
 
 	virtual void UnPossess() override;
+
+
+	virtual void PlayerTick(float DeltaTime) override;
+
+
+
+	virtual FRotator GetControlRotation() const override;
+
+	virtual FRotator GetDesiredRotation() const override;
+
+protected:
+	virtual void UpdateAim();
+
+
+public:
+
+	UFUNCTION(BlueprintCallable, Category="Controller|Aim")
+	FVector GetAimLocation() const { return AimLocation; }
+
+	UFUNCTION(BlueprintCallable, Category = "Controller|Aim")
+	FRotator GetAimRotation() const { return AimRotation; }
+
+
+
+
+
 
 };

@@ -14,6 +14,18 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "AbilitySystemComponent.h"
 
+#include "DrawDebugHelpers.h"
+#include "Weapon.h"
+#include "GunWeapon.h"
+#include "Components/PrimitiveComponent.h"
+#include "GamePlayerController.h"
+
+
+
+
+
+
+
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -53,7 +65,25 @@ APlayerCharacter::APlayerCharacter()
 
 }
 
+void APlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
 
+	if (DefaultWeapon)
+	{
+		FActorSpawnParameters Params;
+		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		AWeapon* weapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeapon, GetActorTransform(), Params);
+		SetWeapon(weapon);
+	}
+}
+
+
+
+void APlayerCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,11 +95,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-
-
-	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
-	// "turn" handles devices that provide an absolute delta, such as a mouse.
-	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
+	
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
@@ -81,6 +107,8 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &APlayerCharacter::StartShooting);
 	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &APlayerCharacter::EndShooting);
+
+	PlayerInputComponent->BindAction("MoveCamera", IE_Released, this, &APlayerCharacter::MoveCamera);
 
 	//AbilitySlot_X
 	PlayerInputComponent->BindAction<FAbilitySlotDelegate>("AbilitySlot_1", IE_Pressed, this, &APlayerCharacter::CallAbilitySlot, 1);
@@ -146,10 +174,74 @@ void APlayerCharacter::CallAbilitySlot(int32 SlotIndex)
 
 void APlayerCharacter::StartShooting()
 {
+	if (Weapon == nullptr) return;
 
+	Weapon->Use();
 }
 
 void APlayerCharacter::EndShooting()
 {
+	if (Weapon == nullptr) return;
 
+	Weapon->EndUse();
 }
+
+
+void APlayerCharacter::MoveCamera()
+{
+	CameraArm->SetRelativeLocation(CameraArm->RelativeLocation * FVector(1, -1, 1));
+}
+
+void APlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	PlayerController = Cast<AGamePlayerController>(NewController);
+}
+
+void APlayerCharacter::UnPossessed()
+{
+	Super::UnPossessed();
+
+	PlayerController = nullptr;
+}
+
+
+
+FRotator APlayerCharacter::GetAimOffsets() const
+{
+	if (PlayerController)
+	{		
+		FVector EyeLoc = FVector(0.f, 0.f, BaseEyeHeight);
+		FVector AimLocationLocal = GetTransform().InverseTransformPosition(PlayerController->GetAimLocation());
+
+		FRotator AimRotaion = (AimLocationLocal - EyeLoc).GetSafeNormal().Rotation();
+		return AimRotaion;
+	}
+
+	return Super::GetAimOffsets();
+}
+
+
+void APlayerCharacter::SetWeapon(AWeapon* NewWeapon)
+{
+	if (NewWeapon == nullptr) return;
+	if (NewWeapon == Weapon) return;
+
+	if (Weapon)
+	{
+		GetCapsuleComponent()->IgnoreComponentWhenMoving(Weapon->GetCollisionPrimitive(), false);
+		Weapon->SetOwner(nullptr);
+	}
+	Weapon = NewWeapon;
+
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("hand_r"));
+	Weapon->SetActorRelativeRotation(FRotator(0, 180, 0)); // Fix hand transform
+	GetCapsuleComponent()->IgnoreComponentWhenMoving(Weapon->GetCollisionPrimitive(), true);
+
+	Weapon->SetOwner(this);
+	OnWeaponChange();
+}
+
+
+
