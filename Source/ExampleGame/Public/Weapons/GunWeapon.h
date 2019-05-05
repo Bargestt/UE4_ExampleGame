@@ -45,7 +45,6 @@ public:
 
 	virtual void Use() override;
 
-
 	virtual void EndUse() override;
 
 	virtual UPrimitiveComponent* GetCollisionPrimitive() const override;
