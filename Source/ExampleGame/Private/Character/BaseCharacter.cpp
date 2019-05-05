@@ -7,6 +7,7 @@
 #include "DrawDebugHelpers.h"
 #include "AbilitySystemComponent.h"
 #include "Animation/AnimInstance.h"
+#include "GamePlayerController.h"
 
 
 
@@ -47,41 +48,27 @@ bool ABaseCharacter::CanDash() const
 
 void ABaseCharacter::ActionRoll()
 {
-	if (!CanRoll())
+	if (CanRoll())
 	{ 
-		return;
-	}
-
-
-	FVector dir = GetMovementComponent()->GetLastInputVector();
-	if (dir.IsNearlyZero()) dir = GetActorForwardVector();
-
-	// raise impulse vector a bit up
-	dir.Z = dir.Size2D() * FMath::Tan(FMath::DegreesToRadians(15));
-
-	GetCharacterMovement()->AddImpulse(dir * RollStrength, true);
-
-	if (Animator)
-	{
-		IBaseCharaterAnimatorInterface::Execute_DodgeRollStart(Animator);
+		
 	}
 }
 
 void ABaseCharacter::ActionDash()
 {
-	if (!CanDash())
+	if (CanDash())
 	{
-		return;
+		
 	}
+}
 
-	FVector dir = GetMovementComponent()->GetLastInputVector();
-	if (dir.IsNearlyZero()) dir = GetActorForwardVector();
+FRotator ABaseCharacter::GetAimOffsets() const
+{
+	if (GetController() == nullptr) return FRotator::ZeroRotator;
 
-	float force = DashStrength * (GetCharacterMovement()->IsWalking() ? 1 : 0.2f);
+	const FVector AimDirectionWorld = GetBaseAimRotation().Vector();
+	const FVector AimDirectionLocal = ActorToWorld().InverseTransformVectorNoScale(AimDirectionWorld);
+	const FRotator AimRotator = AimDirectionLocal.Rotation();
 
-	GetCharacterMovement()->AddImpulse(dir * force , true);
-	if (Animator)
-	{
-		IBaseCharaterAnimatorInterface::Execute_DodgeDashStart(Animator);
-	}
+	return AimRotator;
 }

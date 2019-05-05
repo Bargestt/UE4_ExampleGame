@@ -43,4 +43,8 @@ protected:
 public:
 
 	FORCEINLINE UAbilitySystemComponent* GetAbilitySystem() { return Abilities; }
+
+
+	UFUNCTION(BlueprintCallable, Category = "BaseCharacter")
+	virtual FRotator GetAimOffsets() const;
 };
