@@ -97,13 +97,9 @@ protected:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	virtual void UnPossessed() override;
+	virtual void UnPossessed() override;	
 
-	
 
-//~ Begin BaseCharacter
-	virtual FRotator GetAimOffsets() const override;
-//~ End BaseCharacter
 
 
 
@@ -128,4 +124,9 @@ public:
 	FORCEINLINE class AWeapon* GetWeapon() const { return Weapon; }
 
 
+	//~ Begin BaseCharacter
+	virtual FRotator GetAimOffsets() const override;
+	//~ End BaseCharacter
+
+	FVector GetAimLocation() const;
 };

@@ -9,7 +9,7 @@
 #include "Animation/AnimInstance.h"
 #include "GamePlayerController.h"
 
-
+const FName ABaseCharacter::GripSocketName = TEXT("WeaponSocket");
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -19,6 +19,8 @@ ABaseCharacter::ABaseCharacter()
 	DashStrength = 3500;
 
 	Abilities = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
+
+	
 }
 
 void ABaseCharacter::BeginPlay()

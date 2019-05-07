@@ -107,7 +107,12 @@ void AGunWeapon::WeaponTick(float DeltaSeconds)
 		return;
 	}
 
+	FRotator AimRotation = (Player->GetAimLocation() - GetActorLocation()).Rotation();
+	SetActorRotation(AimRotation);
+
 	FVector From = GetTransform().GetLocation();
 	FVector To = From + GetTransform().GetUnitAxis(EAxis::X) * 2500;
 	DrawDebugLine(GetWorld(), From, To, FColor::Red);
+
+
 }

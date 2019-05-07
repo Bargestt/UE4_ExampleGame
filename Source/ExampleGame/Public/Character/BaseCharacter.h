@@ -19,6 +19,10 @@ class EXAMPLEGAME_API ABaseCharacter : public ACharacter
 	UAbilitySystemComponent* Abilities;
 
 public:
+	
+	static const FName GripSocketName;
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BaseCharacter")
 	float RollStrength;

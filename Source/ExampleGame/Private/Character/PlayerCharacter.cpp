@@ -208,19 +208,7 @@ void APlayerCharacter::UnPossessed()
 
 
 
-FRotator APlayerCharacter::GetAimOffsets() const
-{
-	if (PlayerController)
-	{		
-		FVector EyeLoc = FVector(0.f, 0.f, BaseEyeHeight);
-		FVector AimLocationLocal = GetTransform().InverseTransformPosition(PlayerController->GetAimLocation());
 
-		FRotator AimRotaion = (AimLocationLocal - EyeLoc).GetSafeNormal().Rotation();
-		return AimRotaion;
-	}
-
-	return Super::GetAimOffsets();
-}
 
 
 void APlayerCharacter::SetWeapon(AWeapon* NewWeapon)
@@ -235,8 +223,7 @@ void APlayerCharacter::SetWeapon(AWeapon* NewWeapon)
 	}
 	Weapon = NewWeapon;
 
-	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("hand_r"));
-	Weapon->SetActorRelativeRotation(FRotator(0, 180, 0)); // Fix hand transform
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, ABaseCharacter::GripSocketName);
 	GetCapsuleComponent()->IgnoreComponentWhenMoving(Weapon->GetCollisionPrimitive(), true);
 
 	Weapon->SetOwner(this);
@@ -245,3 +232,21 @@ void APlayerCharacter::SetWeapon(AWeapon* NewWeapon)
 
 
 
+FRotator APlayerCharacter::GetAimOffsets() const
+{
+	if (PlayerController)
+	{
+		FVector EyeLoc = FVector(0.f, 0.f, BaseEyeHeight);
+		FVector AimLocationLocal = GetTransform().InverseTransformPosition(PlayerController->GetAimLocation());
+
+		FRotator AimRotaion = (AimLocationLocal - EyeLoc).GetSafeNormal().Rotation();
+		return AimRotaion;
+	}
+
+	return Super::GetAimOffsets();
+}
+
+FVector APlayerCharacter::GetAimLocation() const
+{
+	return PlayerController ? PlayerController->GetAimLocation() : FVector::ZeroVector;
+}

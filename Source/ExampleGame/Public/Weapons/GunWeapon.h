@@ -27,15 +27,10 @@ class EXAMPLEGAME_API AGunWeapon : public AWeapon
 public:
 
 	static FName Socket_GripPrimary;
-
+	
 	static FName Socket_GripSecondary;
 
 	static FName Socket_Muzzle;
-
-
-
-
-
 
 public:
 	AGunWeapon();
